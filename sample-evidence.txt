@@ -1,0 +1,82 @@
+Analysis of sampling opencode (pid 33837) every 1 millisecond
+Process:         opencode [33837]
+Path:            /Applications/OpenChamber.app/Contents/Resources/opencode-cli/opencode
+Load Address:    0x104408000
+Identifier:      opencode
+Version:         0
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  OpenChamber [32757]
+Target Type:     live task
+
+Date/Time:       2026-07-04 01:50:00.610 +0800
+Launch Time:     2026-07-04 01:32:13.640 +0800
+OS Version:      macOS 26.2 (25C56)
+Report Version:  7
+Analysis Tool:   /usr/bin/sample
+
+Physical footprint:         3.7G
+Physical footprint (peak):  4.7G
+Idle exit:                  untracked
+
+=== fff-bg threads (8 threads all stuck in refresh_git_status) ===
+    769 Thread_66740954: fff-bg-0
+    + 769 thread_start  (in libsystem_pthread.dylib) + 8  [0x19d6d4ba8]
+    +   769 _pthread_start  (in libsystem_pthread.dylib) + 136  [0x19d6d9c08]
+    +     769 _RNvNvMs0_NtNtNtCsaLOjE9VYtxK_3std3sys6thread4unixNtB7_6Thread3new12thread_start  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 388  [0x16541cac0]
+    +       769 core::ops::function::FnOnce::call_once$u7b$$u7b$vtable.shim$u7d$$u7d$::h749a24b7cb09e211  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 148  [0x1653620e4]
+    +         769 std::sys::backtrace::__rust_begin_short_backtrace::hef83b3d4245e44e4  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 12  [0x165361b70]
+    +           769 rayon_core::registry::ThreadBuilder::run::h368721bb859c0fc8  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 300  [0x16535f980]
+    +             769 rayon_core::registry::WorkerThread::wait_until_cold::haaf216a3fe52b39a  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 316  [0x1654d53d4]
+    +               769 _$LT$rayon_core..job..HeapJob$LT$BODY$GT$$u20$as$u20$rayon_core..job..Job$GT$::execute::h0db5a60627456731  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 484  [0x1652e79b0]
+    +                 769 fff_search::shared::SharedFilePicker::refresh_git_status::he185cc6b06cac018  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 2168  [0x1652976a0]
+    +                   769 fff_search::git::GitStatusCache::read_git_status::hb4ec52c3a1693241  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 408  [0x165277930]
+    +                     769 fff_search::git::GitStatusCache::read_status_impl::ha4a14d4ff7dc5392  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 264  [0x165277c34]
+    +                       769 git2::repo::Repository::statuses::h59d0e3211b61a297  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 56  [0x16531de84]
+    +                         769 git_status_list_new  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 748  [0x1654932fc]
+    +                           769 git_diff_index_to_workdir  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 416  [0x165468644]
+    +                             769 git_diff__from_iterators  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 2200  [0x165467788]
+    +                               769 filesystem_iterator_advance_into  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 252  [0x1654789dc]
+    +                                 711 filesystem_iterator_frame_push  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 1408  [0x165479334]
+    +                                 ! 711 git_fs_path_diriter_stat  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 44  [0x16549d19c]
+    +                                 !   711 lstat  (in libsystem_kernel.dylib) + 8  [0x19d6a283c]
+    +                                 58 filesystem_iterator_frame_push  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 940  [0x165479160]
+...
+    769 Thread_66740955: fff-bg-1
+    + 769 thread_start  (in libsystem_pthread.dylib) + 8  [0x19d6d4ba8]
+    +   769 _pthread_start  (in libsystem_pthread.dylib) + 136  [0x19d6d9c08]
+    +     769 _RNvNvMs0_NtNtNtCsaLOjE9VYtxK_3std3sys6thread4unixNtB7_6Thread3new12thread_start  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 388  [0x16541cac0]
+    +       769 core::ops::function::FnOnce::call_once$u7b$$u7b$vtable.shim$u7d$$u7d$::h749a24b7cb09e211  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 148  [0x1653620e4]
+    +         769 std::sys::backtrace::__rust_begin_short_backtrace::hef83b3d4245e44e4  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 12  [0x165361b70]
+    +           769 rayon_core::registry::ThreadBuilder::run::h368721bb859c0fc8  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 300  [0x16535f980]
+    +             769 rayon_core::registry::WorkerThread::wait_until_cold::haaf216a3fe52b39a  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 316  [0x1654d53d4]
+    +               769 _$LT$rayon_core..job..HeapJob$LT$BODY$GT$$u20$as$u20$rayon_core..job..Job$GT$::execute::h0db5a60627456731  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 484  [0x1652e79b0]
+    +                 769 fff_search::shared::SharedFilePicker::refresh_git_status::he185cc6b06cac018  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 2168  [0x1652976a0]
+    +                   769 fff_search::git::GitStatusCache::read_git_status::hb4ec52c3a1693241  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 408  [0x165277930]
+    +                     769 fff_search::git::GitStatusCache::read_status_impl::ha4a14d4ff7dc5392  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 264  [0x165277c34]
+    +                       769 git2::repo::Repository::statuses::h59d0e3211b61a297  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 56  [0x16531de84]
+    +                         769 git_status_list_new  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 748  [0x1654932fc]
+    +                           769 git_diff_index_to_workdir  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 416  [0x165468644]
+
+=== Summary: recursive functions ===
+Total number in stack (recursive counted multiple, when >=5):
+        53       __tolower  (in libsystem_c.dylib) + 0  [0x19d56bca8]
+        45       _pthread_start  (in libsystem_pthread.dylib) + 136  [0x19d6d9c08]
+        45       thread_start  (in libsystem_pthread.dylib) + 8  [0x19d6d4ba8]
+        33       DYLD-STUB$$__tolower  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 0  [0x1654e5424]
+        30       git__strcasecmp  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 60  [0x1654a5bb8]
+        27       git__strcasecmp  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 48  [0x1654a5bac]
+        19       __psynch_cvwait  (in libsystem_kernel.dylib) + 0  [0x19d69a4f0]
+        19       _pthread_cond_wait  (in libsystem_pthread.dylib) + 984  [0x19d6da0dc]
+        17       _RNvNvMs0_NtNtNtCsaLOjE9VYtxK_3std3sys6thread4unixNtB7_6Thread3new12thread_start  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 388  [0x16541cac0]
+        16       ???  (in opencode)  load address 0x104408000 + 0x139e5dc  [0x1057a65dc]
+        16       ???  (in opencode)  load address 0x104408000 + 0x139ed90  [0x1057a6d90]
+        16       ???  (in opencode)  load address 0x104408000 + 0x17a2d88  [0x105baad88]
+        16       ???  (in opencode)  load address 0x104408000 + 0x31c39e4  [0x1075cb9e4]
+        16       __ulock_wait2  (in libsystem_kernel.dylib) + 0  [0x19d6a4c6c]
+        14       ???  (in opencode)  load address 0x104408000 + 0x2c4d4b4  [0x1070554b4]
+        14       dowild  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 0  [0x1654a70ec]
+        14       git__strcasecmp  (in .b9bef7f7e7ff3bb2-00000000.dylib) + 0  [0x1654a5b7c]
+        13       ???  (in opencode)  load address 0x104408000 + 0x1c7f8b0  [0x1060878b0]
+        10       _platform_memmove  (in libsystem_platform.dylib) + 0  [0x19d6e3360]
+        9       ???  (in <unknown binary>)  [0x12461403c]
