@@ -1,0 +1,60 @@
+CPU Profile Evidence — opencode v1.4.0, April 9, 2026
+======================================================
+
+Machine: Apple M4 Max, 128GB RAM
+Project: Large monorepo, ~51,000 tracked files (excl node_modules/.git)
+Condition: Active agent session editing files, desktop app with Changes panel visible
+
+Profiles captured at ~/.local/share/opencode/log/cpu-*.cpuprofile
+(loadable in Chrome DevTools → Performance tab)
+
+Profile 1: cpu-21622-2026-04-09T082850444Z.cpuprofile
+  Total samples: 6939
+  diff library:  3650 (52%)  ← execEditLength + formatPatch + diffLinesResultToPatch
+  vcs.ts:          28
+  snapshot:         0
+
+Profile 2: cpu-21622-2026-04-09T083000947Z.cpuprofile
+  Total samples: 6908
+  diff library:  3588 (51%)
+  vcs.ts:          34
+  snapshot:         0
+
+Profile 3: cpu-21622-2026-04-09T083106439Z.cpuprofile
+  Total samples: 7031
+  diff library:  3717 (52%)
+  vcs.ts:          42
+  snapshot:         0
+
+Top functions by hit count (Profile 1):
+  hits=1405  execEditLength     diff/libesm/diff/base.js       ← O(N·D) Myers diff
+  hits= 693  execEditLength     diff/libesm/diff/base.js
+  hits= 591  execEditLength     diff/libesm/diff/base.js
+  hits= 307  diffLinesResultToPatch  diff/libesm/patch/create.js
+  hits= 116  (anonymous)        diff/libesm/patch/create.js
+  hits= 101  diffLinesResultToPatch  diff/libesm/patch/create.js
+  hits=  97  diffLinesResultToPatch  diff/libesm/patch/create.js
+  hits=  63  tokenize2          diff/libesm/diff/line.js
+  hits=  58  addToPath          diff/libesm/diff/base.js
+  hits=  29  formatPatch        diff/libesm/patch/create.js
+  hits=   9  (anonymous)        src/project/vcs.ts              ← caller
+
+Root cause chain:
+  1. File watcher detects file change
+  2. Triggers Vcs.status() → spawns `git status --porcelain` + `git diff --numstat`
+  3. For each dirty file, calls structuredPatch(file, before, after, { context: MAX_SAFE_INTEGER })
+  4. structuredPatch runs Myers diff O(N·D) where N = file lines, D = edit distance
+  5. With context: MAX_SAFE_INTEGER, the entire file is included in the patch output
+  6. On large files (20k+ lines), this takes 100ms+ per file
+  7. With 200+ dirty files × repeated watcher triggers = sustained 200%+ CPU
+
+macOS `sample` evidence (separate capture, July 4, 2026):
+  Process: opencode [33837], CPU 280%, 3.7GB RSS, 47 threads
+  8 fff-bg-* rayon threads simultaneously in:
+    SharedFilePicker::refresh_git_status
+    → GitStatusCache::read_git_status
+    → git2::Repository::statuses
+    → git_status_list_new
+    → git_diff_index_to_workdir
+    → lstat() per tracked file (500k+ calls)
+  See sample-evidence.txt for full call stacks.
